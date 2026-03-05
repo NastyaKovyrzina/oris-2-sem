@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}GlitchTracker{% endblock %}</title>
+    <!-- Шрифт Orbitron для заголовков, моноширинный для всего остального -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&display=swap" rel="stylesheet">
+    <!-- Подключаем Source Code Pro как альтернативу моноширинному (он мягче) -->
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome для иконок -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Сброс отступов и базовые настройки */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            /* Меняем шрифт на моноширинный — в духе матрицы */
+            font-family: 'Source Code Pro', 'Courier New', monospace;
+            background: radial-gradient(ellipse at top, #0a0f1e, #030514);
+            color: #e0e0e0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: rgba(10, 20, 30, 0.85);
+            backdrop-filter: blur(8px);
+            padding: 1.5rem 2rem;
+            border-bottom: 2px solid #2a5f5e;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+        }
+
+        header h1 {
+            font-size: 2rem;
+            font-weight: 300;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            /* Заголовок оставим на Orbitron — контрастно и стильно */
+            font-family: 'Orbitron', sans-serif;
+            background: linear-gradient(45deg, #a0ffd0, #70ffc0, #a0ffd0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 10px #0affaa;
+        }
+
+        nav {
+            margin-top: 0.5rem;
+        }
+
+        nav a {
+            color: #b0ffe0;
+            text-decoration: none;
+            margin-right: 2rem;
+            font-size: 1.1rem;
+            padding: 0.3rem 0;
+            border-bottom: 2px solid transparent;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            border-bottom-color: #0ffff0;
+            color: #ffffff;
+            text-shadow: 0 0 8px cyan;
+        }
+
+        main {
+            flex: 1;
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            width: 100%;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            background: #0a0f1a;
+            color: #6c8a7a;
+            border-top: 1px solid #1e3f2f;
+            font-size: 0.9rem;
+        }
+
+        /* Стили для карточек аномалий */
+        .anomaly-list {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .anomaly-card {
+            background: rgba(20, 40, 40, 0.6);
+            border: 1px solid #2e6b5e;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 255, 200, 0.2);
+        }
+
+    
+
+        .anomaly-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #aaffd0;
+            padding-left: 0.75rem;
+        }
+
+        .anomaly-detail {
+            margin: 0.75rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .anomaly-detail i {
+            font-style: normal;
+            color: #7fffd0;
+            width: 24px;
+        }
+
+        .danger-level {
+            display: inline-block;
+            padding: 0.25rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+
+        .danger-critical {
+            background: #8b0000;
+            color: #ffaaaa;
+            box-shadow: 0 0 10px red;
+        }
+
+        .danger-high {
+            background: #b45f06;
+            color: #ffe0b0;
+        }
+
+        .danger-medium {
+            background: #b8860b;
+            color: #fff0c0;
+        }
+
+        .danger-low {
+            background: #1e5b3c;
+            color: #c0ffc0;
+        }
+
+        .status {
+            margin-top: 1rem;
+            font-weight: 600;
+            padding: 0.25rem 1rem;
+            border-radius: 5px;
+            display: inline-block;
+        }
+
+        .status-resolved {
+            background: #145a32;
+            color: #a8f0b0;
+        }
+
+        .status-unresolved {
+            background: #7b241c;
+            color: #ffb0b0;
+        }
+
+        /* Кнопки */
+        .btn {
+            display: inline-block;
+            background: transparent;
+            border: 2px solid #0ff0b0;
+            color: #0ff0b0;
+            padding: 0.5rem 1.5rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: #0ff0b0;
+            color: #0a0f1a;
+            box-shadow: 0 0 15px #0ff0b0;
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <header>
+        <h1><i class="fas fa-glitch" style="margin-right: 10px;"></i>GlitchTracker - сбои реальности и аномалии</h1>
+        <nav>
+            <a href="{% url 'index' %}"><i class="fas fa-home"></i> Главная</a>
+            <a href="{% url 'anomaly_list' %}"><i class="fas fa-list"></i> Список сбоев</a>
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+</body>
+</html>

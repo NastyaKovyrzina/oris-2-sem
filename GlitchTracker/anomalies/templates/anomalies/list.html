@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}Сбои - GlitchTracker{% endblock %}
+
+{% block content %}
+    <h2 style="font-size: 2.2rem; margin-bottom: 1rem; text-align: center; text-shadow: 0 0 10px cyan;">Зафиксированные сбои матрицы</h2>
+
+    {% if anomalies %}
+        <ul class="anomaly-list" style="list-style: none; padding-left: 0; margin-left: 0;">
+            {% for anomaly in anomalies %}
+                <li class="anomaly-card">
+                    <div class="anomaly-title">{{ anomaly.title }}</div>
+                    <div class="anomaly-detail">
+                        <i class="fas fa-map-marker-alt"></i> {{ anomaly.location }}
+                    </div>
+                    <div class="anomaly-detail">
+                        <i class="fas fa-exclamation-triangle"></i> Уровень угрозы реальности: 
+                        <span class="danger-level 
+                            {% if anomaly.danger_level == 'Критический' %}danger-critical
+                            {% elif anomaly.danger_level == 'Высокий' %}danger-high
+                            {% elif anomaly.danger_level == 'Средний' %}danger-medium
+                            {% elif anomaly.danger_level == 'Низкий' %}danger-low
+                            {% endif %}">
+                            {{ anomaly.danger_level }}
+                        </span>
+                    </div>
+                    <div class="anomaly-detail">
+                        <i class="fas fa-robot"></i> Статус:
+                        <span class="status 
+                            {% if anomaly.resolved %}status-resolved{% else %}status-unresolved{% endif %}">
+                            {% if anomaly.resolved %}✅ Исправлено{% else %}⛔ Активно{% endif %}
+                        </span>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p style="text-align: center; font-size: 1.5rem; color: #aaa;">Сбоев пока не зафиксировано</p>
+    {% endif %}
+
+    <div style="text-align: center; margin-top: 2rem;">
+        <a href="{% url 'index' %}" class="btn">← На главную</a>
+    </div>
+{% endblock %}

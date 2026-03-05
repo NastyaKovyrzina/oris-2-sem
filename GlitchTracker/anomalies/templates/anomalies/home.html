@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Главная - GlitchTracker{% endblock %}
+
+{% block content %}
+    <div style="text-align: center; padding: 3rem 1rem;">
+        <h2 style="font-size: 3rem; margin-bottom: 1.5rem; background: linear-gradient(135deg, #fff, #aaddff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0 0 20px #0af;">GlitchTracker</h2>
+        <p style="font-size: 1.4rem; max-width: 700px; margin: 0 auto 2rem; color: #ccc;">
+            Добро пожаловать на сайт исследований пространственно-временных аномалий. 
+            Здесь собраны данные о необъяснимых явлениях по всему миру!
+        </p>
+        <!-- Одна кнопка по центру -->
+        <div style="display: flex; justify-content: center;">
+            <a href="{% url 'anomaly_list' %}" class="btn" style="font-size: 1.2rem; padding: 0.8rem 2.5rem;">Просмотр аномалий</a>
+        </div>
+    </div>
+
+    <div style="margin-top: 4rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
+        <div style="background: rgba(255,255,255,0.05); border-radius: 20px; padding: 2rem; text-align: center; backdrop-filter: blur(5px);">
+            <div style="font-size: 3rem;">👾</div>
+            <h3>Типы аномалий</h3>
+            <p>Гравитационные, временные, пространственные искажения</p>
+        </div>
+        <div style="background: rgba(255,255,255,0.05); border-radius: 20px; padding: 2rem; text-align: center; backdrop-filter: blur(5px);">
+            <div style="font-size: 3rem;">🌍</div>
+            <h3>Локации</h3>
+            <p>Аномалии зафиксированы в крупнейших городах</p>
+        </div>
+        <div style="background: rgba(255,255,255,0.05); border-radius: 20px; padding: 2rem; text-align: center; backdrop-filter: blur(5px);">
+            <div style="font-size: 3rem;">⚡</div>
+            <h3>Уровни опасности</h3>
+            <p>От низкого до критического</p>
+        </div>
+    </div>
+{% endblock %}
