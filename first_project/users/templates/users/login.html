@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<div style="max-width: 400px; margin: 50px auto; padding: 20px; border: 1px solid #ff1493; border-radius: 10px;">
+    <h2>Вход в PinkStore</h2>
+    
+    <form method="post">
+        {% csrf_token %} {{ form.as_p }} <button type="submit" style="background: #ff1493; color: white; width: 100%; padding: 10px; border: none; border-radius: 5px; cursor: pointer;">
+            Войти
+        </button>
+    </form>
+    
+    <p style="margin-top: 15px;">
+        Нет аккаунта? <a href="{% url 'users:register' %}" style="color: #ff1493;">Зарегистрироваться</a>
+    </p>
+    <p><a href="{% url 'password_reset' %}">Забыли пароль?</a></p>
+</div>
+{% endblock %}

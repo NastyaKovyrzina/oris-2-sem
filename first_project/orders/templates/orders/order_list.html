@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Список заказов</title>
+</head>
+<body>
+    <h1>Все заказы</h1>
+    <ul>
+    {% for order in orders %}
+        <li>Заказ #{{ order.id }} — товар: {{ order.product.name }} ({{ order.quantity }} шт.)</li>
+    {% empty %}
+        <li>Заказов пока нет.</li>
+    {% endfor %}
+    </ul>
+</body>
+</html>
