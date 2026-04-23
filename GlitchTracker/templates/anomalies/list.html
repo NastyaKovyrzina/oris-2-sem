@@ -1,15 +1,31 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Сбои - GlitchTracker{% endblock %}
 
+
+
 {% block content %}
     <h2 style="font-size: 2.2rem; margin-bottom: 1rem; text-align: center; text-shadow: 0 0 10px cyan;">Зафиксированные сбои матрицы</h2>
+
+    {% if user.is_authenticated %}
+        <a href="{% url 'create_anomaly' %}">➕ Новая аномалия</a>
+    {% endif %}
+
 
     {% if anomalies %}
         <ul class="anomaly-list" style="list-style: none; padding-left: 0; margin-left: 0;">
             {% for anomaly in anomalies %}
                 <li class="anomaly-card">
-                    <div class="anomaly-title">{{ anomaly.title }}</div>
+                    <a href="{% url 'anomaly_detail' anomaly.id %}" class="anomaly-title-link">
+                        <div class="anomaly-title">{{ anomaly.title }}</div>
+                    </a>
+                    <a href="{% url 'add_to_favorites' anomaly.pk %}" class="btn" style="padding: 0.2rem 1rem;">⭐</a>
+                    {% if anomaly.image_path %}
+                        <div style="margin: 10px 0;">
+                            <img src="{% static anomaly.image_path %}" alt="{{ anomaly.title }}" style="max-width: 100%; max-height: 180px; border-radius: 8px;">
+                        </div>
+                    {% endif %}
                     <div class="anomaly-detail">
                         <i class="fas fa-map-marker-alt"></i> {{ anomaly.location }}
                     </div>

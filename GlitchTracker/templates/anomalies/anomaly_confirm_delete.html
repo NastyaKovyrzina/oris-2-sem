@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Удалить аномалию "{{ object.title }}"?</h2>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Да, удалить</button>
+    <a href="{% url 'anomaly_detail' object.pk %}">Отмена</a>
+</form>
+{% endblock %}

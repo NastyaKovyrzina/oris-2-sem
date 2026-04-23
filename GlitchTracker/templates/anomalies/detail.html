@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ anomaly.title }} | GlitchTracker{% endblock %}
+
+{% block content %}
+<div class="anomaly-card" style="margin-bottom: 2rem;">
+    <div class="anomaly-title">{{ anomaly.title }}</div>
+    {% if anomaly.image_path %}
+        <div style="margin: 15px 0;">
+            <img src="{% static anomaly.image_path %}" alt="{{ anomaly.title }}" style="max-width: 300px; border-radius: 10px;">
+        </div>
+    {% endif %}
+    <div class="anomaly-detail">
+        <i class="fas fa-map-marker-alt"></i> {{ anomaly.location }}
+    </div>
+    <div class="anomaly-detail">
+        <i class="fas fa-exclamation-triangle"></i> Уровень угрозы реальности:
+        <span class="danger-level 
+            {% if anomaly.danger_level == 'Критический' %}danger-critical
+            {% elif anomaly.danger_level == 'Высокий' %}danger-high
+            {% elif anomaly.danger_level == 'Средний' %}danger-medium
+            {% elif anomaly.danger_level == 'Низкий' %}danger-low
+            {% endif %}">
+            {{ anomaly.danger_level }}
+        </span>
+    </div>
+    <div class="anomaly-detail">
+        <i class="fas fa-robot"></i> Статус:
+        <span class="status {% if anomaly.resolved %}status-resolved{% else %}status-unresolved{% endif %}">
+            {% if anomaly.resolved %}✅ Исправлено{% else %}⛔ Активно{% endif %}
+        </span>
+    </div>
+    <div class="anomaly-detail">
+        <i class="fas fa-user-astronaut"></i> Автор: {{ anomaly.author.username }}
+    </div>
+    <div class="anomaly-detail">
+        <i class="fas fa-align-left"></i> Описание:<br>
+        {{ anomaly.description|linebreaks }}
+    </div>
+
+    {% if user.is_authenticated and user.id == anomaly.author.id %}
+        <div style="margin-top: 1rem;">
+            <a href="{% url 'anomaly_update' anomaly.pk %}" class="btn">Редактировать</a>
+            <a href="{% url 'anomaly_delete' anomaly.pk %}" class="btn" style="border-color: #ff6666; color: #ffaaaa;">Удалить</a>
+        </div>
+        <a href="{% url 'add_to_favorites' anomaly.pk %}" class="btn">⭐ В избранное</a>
+    {% endif %}
+</div>
+
+<h2 style="margin-top: 2rem;">Теории и версии</h2>
+<div class="anomaly-list">
+    {% for theory in theories %}
+        <div class="anomaly-card">
+            <div class="anomaly-title">{{ theory.title }}</div>
+            <div class="anomaly-detail">
+                <i class="fas fa-comment-dots"></i> {{ theory.explanation|linebreaks }}
+            </div>
+            <div class="anomaly-detail">
+                <i class="fas fa-user"></i> {{ theory.author.username }}
+            </div>
+            <div class="anomaly-detail">
+                <i class="fas fa-thumbs-up"></i> Голосов: {{ theory.votes }}
+            </div>
+            {% if user.is_authenticated and user.id == theory.author.id %}
+                <div style="margin-top: 0.5rem;">
+                    <a href="{% url 'theory_update' theory.pk %}" class="btn" style="padding: 0.2rem 1rem;">✏️ Править</a>
+                    <a href="{% url 'theory_delete' theory.pk %}" class="btn" style="padding: 0.2rem 1rem; border-color: #ff6666;">🗑️ Удалить</a>
+                </div>
+            {% endif %}
+        </div>
+    {% empty %}
+        <p style="text-align: center;">Пока нет теорий. Будьте первым, кто объяснит этот сбой!</p>
+    {% endfor %}
+</div>
+
+<div class="anomaly-card" style="margin-top: 2rem;">
+    <h3 style="color: #aaffd0;">Предложить свою теорию</h3>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn">Отправить</button>
+    </form>
+</div>
+
+<div style="text-align: center; margin-top: 2rem;">
+    <a href="{% url 'anomaly_list' %}" class="btn">← Назад к списку аномалий</a>
+</div>
+{% endblock %}

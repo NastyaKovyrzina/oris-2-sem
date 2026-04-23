@@ -4,14 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}GlitchTracker{% endblock %}</title>
-    <!-- Шрифт Orbitron для заголовков, моноширинный для всего остального -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&display=swap" rel="stylesheet">
-    <!-- Подключаем Source Code Pro как альтернативу моноширинному (он мягче) -->
     <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@300;400;600&display=swap" rel="stylesheet">
-    <!-- Font Awesome для иконок -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* Сброс отступов и базовые настройки */
         * {
             margin: 0;
             padding: 0;
@@ -19,7 +15,6 @@
         }
 
         body {
-            /* Меняем шрифт на моноширинный — в духе матрицы */
             font-family: 'Source Code Pro', 'Courier New', monospace;
             background: radial-gradient(ellipse at top, #0a0f1e, #030514);
             color: #e0e0e0;
@@ -41,7 +36,6 @@
             font-weight: 300;
             letter-spacing: 3px;
             text-transform: uppercase;
-            /* Заголовок оставим на Orbitron — контрастно и стильно */
             font-family: 'Orbitron', sans-serif;
             background: linear-gradient(45deg, #a0ffd0, #70ffc0, #a0ffd0);
             -webkit-background-clip: text;
@@ -86,7 +80,6 @@
             font-size: 0.9rem;
         }
 
-        /* Стили для карточек аномалий */
         .anomaly-list {
             list-style: none;
             display: grid;
@@ -194,21 +187,75 @@
             color: #0a0f1a;
             box-shadow: 0 0 15px #0ff0b0;
         }
+        /* Стили для форм */
+        input, textarea, select {
+            background: rgba(10, 20, 20, 0.8);
+            border: 1px solid #2a6b5e;
+            color: #d0f0e0;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-family: 'Source Code Pro', monospace;
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #0ff0b0;
+            box-shadow: 0 0 8px cyan;
+        }
+        /* Светлая тема */
+        body.light-theme {
+            background: #f0f4f8;
+            color: #1a2a3a;
+        }
+        body.light-theme header {
+            background: rgba(240, 248, 255, 0.9);
+            border-bottom-color: #2a5f5e;
+        }
+        body.light-theme .anomaly-card {
+            background: #ffffff;
+            border-color: #c0d0e0;
+            color: #1a2a3a;
+        }
+        body.dark-theme {
+            background: radial-gradient(ellipse at top, #0a0f1e, #030514);
+            color: #e0e0e0;
+        }
+        label {
+            color: #aaffd0;
+            font-weight: 600;
+            display: block;
+            margin-bottom: 0.3rem;
+}
     </style>
     {% block extra_css %}{% endblock %}
 </head>
-<body>
+<body class="{% if request.COOKIES.theme == 'dark' %}dark-theme{% else %}light-theme{% endif %}">
     <header>
         <h1><i class="fas fa-glitch" style="margin-right: 10px;"></i>GlitchTracker - сбои реальности и аномалии</h1>
         <nav>
             <a href="{% url 'index' %}"><i class="fas fa-home"></i> Главная</a>
+            <a href="{% url 'toggle_theme' %}" style="margin-left: 20px;">
+                {% if request.COOKIES.theme == 'dark' %}☀️ Светлая тема{% else %}🌙 Тёмная тема{% endif %}
+            </a>
             <a href="{% url 'anomaly_list' %}"><i class="fas fa-list"></i> Список сбоев</a>
+            <a href="{% url 'favorites_list' %}"><i class="fas fa-heart"></i> Избранное</a>
         </nav>
+        {% if user.is_authenticated %}
+            <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit">Выйти</button>
+            </form>
+            <span>Привет, {{ user.username }}!</span>
+        {% else %}
+            <a href="{% url 'login' %}">Войти</a> | <a href="{% url 'register' %}">Регистрация</a>
+        {% endif %}
     </header>
 
     <main>
         {% block content %}
         {% endblock %}
     </main>
+
 </body>
 </html>

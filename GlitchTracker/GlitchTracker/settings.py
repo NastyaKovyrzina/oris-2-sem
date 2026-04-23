@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     "anomalies.apps.AnomaliesConfig",
     "theories.apps.TheoriesConfig",
     "proofs.apps.ProofsConfig",
+    #"users.apps.UsersConfig"
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -109,7 +110,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/6.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru-RU'
 
 TIME_ZONE = 'UTC'
 
@@ -120,8 +121,24 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
+import os
+from dotenv import load_dotenv
+load_dotenv(BASE_DIR / '.env')
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [ 
     BASE_DIR / 'static_dev', 
+    BASE_DIR / 'static',
 ]
+
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = os.environ.get('EMAIL_HOST')
+EMAIL_PORT = int(os.environ.get('EMAIL_PORT', 465))
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+EMAIL_USE_SSL = os.environ.get('EMAIL_USE_SSL', 'True') == 'True'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Избранные аномалии</h2>
+<div class="anomaly-list">
+    {% for anomaly in anomalies %}
+        <div class="anomaly-card">
+            <div class="anomaly-title">{{ anomaly.title }}</div>
+            <a href="{% url 'remove_from_favorites' anomaly.pk %}" class="btn" style="border-color: red;">Удалить из избранного</a>
+            <a href="{% url 'anomaly_detail' anomaly.pk %}" class="btn">Подробнее</a>
+        </div>
+    {% empty %}
+        <p>Нет избранных аномалий.</p>
+    {% endfor %}
+</div>
+{% endblock %}
