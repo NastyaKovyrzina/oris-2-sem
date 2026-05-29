@@ -20,7 +20,7 @@ services:
 
   web:
     build: .
-    command: bash -c "python manage.py migrate && daphne -b 0.0.0.0 -p 8000 our_project.asgi:application"
+    command: bash -c "python manage.py migrate && daphne -b 0.0.0.0 -p 8000 first_project.asgi:application"
     ports:
       - "8000:8000"
     depends_on:

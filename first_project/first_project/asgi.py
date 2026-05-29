@@ -5,7 +5,7 @@ from channels.routing import ProtocolTypeRouter, URLRouter
 from catalog.routing import websocket_urlpatterns
 
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'our_project.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'first_project.settings')
 
 
 django_asgi_app = get_asgi_application()

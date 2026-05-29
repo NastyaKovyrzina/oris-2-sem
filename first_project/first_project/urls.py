@@ -1,5 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 from django.urls import reverse_lazy
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
@@ -15,7 +17,7 @@ urlpatterns = [
     path('', include('reviews.urls')),
     path('users/', include('users.urls')),
     path('reviews/', include('reviews.urls')),
-    path('catalog/', include('catalog.urls')), 
+    path('catalog/', include('catalog.urls')),
     path('password-reset/',
          auth_views.PasswordResetView.as_view(
              template_name='registration/password_reset_form.html',
@@ -56,3 +58,6 @@ urlpatterns = [
     path('api/profile/', MyProfileRetrieveUpdateView.as_view(), name='my-profile'),
     path('api/register/', UserRegistrationView.as_view(), name='user-register'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
