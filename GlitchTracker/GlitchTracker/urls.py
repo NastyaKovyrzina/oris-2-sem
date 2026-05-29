@@ -20,6 +20,15 @@ from django.contrib.auth.views import LoginView, LogoutView
 from anomalies.views import register
 from django.contrib.auth import views as auth_views
 from django.urls import reverse_lazy
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
+from anomalies.api_views import AnomalyListCreateView, AnomalyRetrieveUpdateDestroyView
+from theories.api_views import TheoryListCreateView, TheoryRetrieveUpdateDestroyView
+from django.contrib import admin
+from django.urls import path, include
+from django.contrib import admin
+from django.urls import path, include
+from anomalies.api_views import AnomalyListCreateView, AnomalyRetrieveUpdateDestroyView
+from theories.api_views import TheoryListCreateView, TheoryRetrieveUpdateDestroyView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -48,5 +57,17 @@ urlpatterns = [
     path('password-reset/complete/',
          auth_views.PasswordResetCompleteView.as_view(template_name='registration/password_reset_complete.html'),
          name='password_reset_complete'),
-]
+         
+    path('api/anomalies/', AnomalyListCreateView.as_view(), name='api_anomaly_list'),
+    path('api/anomalies/<int:pk>/', AnomalyRetrieveUpdateDestroyView.as_view(), name='api_anomaly_detail'),
+    path('api/theories/', TheoryListCreateView.as_view(), name='api_theory_list'),
+    path('api/theories/<int:pk>/', TheoryRetrieveUpdateDestroyView.as_view(), name='api_theory_detail'),
 
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('api/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    path('api/schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
+    # dj-rest-auth (REST-эндпоинты для логина/логаута/регистрации)
+    path('api/auth/', include('dj_rest_auth.urls')),
+    path('api/auth/registration/',include('dj_rest_auth.registration.urls')),
+    path('accounts/', include('allauth.urls'))
+]

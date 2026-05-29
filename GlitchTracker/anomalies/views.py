@@ -117,3 +117,7 @@ def toggle_theme(request):
     response = redirect(request.META.get('HTTP_REFERER', '/'))
     response.set_cookie('theme', new_theme, max_age=30*24*60*60)  # 30 дней
     return response
+
+@login_required
+def chat_room(request):
+    return render(request, 'anomalies/chat.html')

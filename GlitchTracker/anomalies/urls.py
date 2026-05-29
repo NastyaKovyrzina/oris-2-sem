@@ -13,4 +13,5 @@ urlpatterns = [
     path('favorites/add/<int:pk>/', views.add_to_favorites, name='add_to_favorites'),
     path('favorites/remove/<int:pk>/', views.remove_from_favorites, name='remove_from_favorites'),
     path('toggle-theme/', views.toggle_theme, name='toggle_theme'),
+    path('chat/', views.chat_room, name='chat_room'),
     ]
