@@ -1,13 +1,13 @@
 from django.db import models
 from catalog.models import Product
 from django.contrib.auth.models import User
-
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 class Review(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='reviews', verbose_name="Товар")
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Автор")
     text = models.TextField("Текст")
-    rating = models.IntegerField("Оценка", default=5)
+    rating = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
 
     class Meta:
         verbose_name = "Отзыв"

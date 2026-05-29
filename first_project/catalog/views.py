@@ -3,6 +3,7 @@ from reviews.models import Review
 from reviews.forms import ReviewForm
 from .models import Product, Category
 from django.http import HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
 
 def product_list(request):
     products = Product.objects.all()
@@ -70,3 +71,7 @@ def toggle_theme(request):
     resp.set_cookie('theme', new, max_age=60*60*24*30, samesite='Lax')
     print(f"New theme set: {new}")
     return resp
+
+@login_required
+def chat_room(request):
+    return render(request, 'catalog/chat.html')

@@ -4,6 +4,10 @@ from .models import Review
 from .forms import ReviewForm
 from catalog.models import Product
 
+def review_list(request):
+    reviews = Review.objects.all()
+    return render(request, 'reviews/review_list.html', {'reviews': reviews})
+
 @login_required
 def add_review(request, product_id):
     product = get_object_or_404(Product, id=product_id)

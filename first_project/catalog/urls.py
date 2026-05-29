@@ -1,5 +1,5 @@
 from django.urls import path
-from . import views
+from . import views, api_views
 
 app_name = 'catalog'
 
@@ -10,5 +10,9 @@ urlpatterns = [
     path('cart/', views.cart_view, name='cart_view'),
     path('cart/clear/', views.clear_cart, name='clear_cart'),
     path('product/<int:product_id>/add-to-cart/', views.add_to_cart, name='add_to_cart'),
-    path('toggle-theme/', views.toggle_theme, name='toggle_theme')
+    path('toggle-theme/', views.toggle_theme, name='toggle_theme'),
+    path('api/categories/', api_views.CategoryListCreateView.as_view(), name="api_categories"),
+    path('api/products/', api_views.ProductListCreateView.as_view(), name="api_products"),
+    path('api/products/<int:pk>/', api_views.ProductRetrieveUpdateDestroyView.as_view(), name="api_product_detail"),
+    path('chat/', views.chat_room, name='chat_room'),
 ]
